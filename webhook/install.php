@@ -1,4 +1,12 @@
 <?php
+function generateUUIDv4() {
+    $data = random_bytes(16);
+    // バージョンを設定 (4はUUIDv4を表す)
+    $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
+    // RFC 4122 バリアントを設定
+    $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
+    return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+}
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $json = file_get_contents('php://input');
     // Converts json data into a PHP object 
@@ -22,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 date_default_timezone_set('Asia/Tokyo');
 $nowStr = date('Ymd_His');
 $dataStr = 'アプリID : '.$app_id."\n".'プランID : '.$plan_id."\n".'アプリ名 : '.$app_name."\n".'ショップID : '.$shop_id."\n".'永続トークン : '.$token."\n";
-file_put_contents(__DIR__.'/install_'.$nowStr.'.txt',$dataStr);
+file_put_contents(__DIR__.'/install_'.$nowStr.'_'.generateUUIDv4().'.txt',$dataStr);
 
 ?>
 <p>アプリID : <?= $app_id ?></p>
