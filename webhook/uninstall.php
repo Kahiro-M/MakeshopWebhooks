@@ -28,6 +28,16 @@ $nowStr = date('Ymd_His');
 $dataStr = 'アプリID : '.$app_id."\n".'プランID : '.$plan_id."\n".'アプリ名 : '.$app_name."\n".'ショップID : '.$shop_id."\n".'永続トークン : '.$token."\n";
 file_put_contents(__DIR__.'/uninstall_'.$nowStr.'_'.generateUUIDv4().'.txt',$dataStr);
 
+// var_dumpを全取得
+ob_start();
+var_dump('$_SERVER');
+var_dump($_SERVER);
+var_dump('$_POST');
+var_dump($_POST);
+$dump = ob_get_contents();
+ob_end_clean();
+file_put_contents(__DIR__.'/all_uninstall_'.$nowStr.'_'.generateUUIDv4().'.txt',$dump);
+
 ?>
 <p>アプリID : <?= $app_id ?></p>
 <p>アプリ名 : <?= $app_name ?></p>
